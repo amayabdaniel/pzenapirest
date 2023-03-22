@@ -1,33 +1,31 @@
 const express = require('express');
-const routerApi = require('./routes');
 const cors = require('cors');
+const routerApi = require('./routes');
 
 const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/error.handler');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-const whitelist = ['http://localhost:8080', 'http://localhost:8081'];
-const corsOptions = {
+const whitelist = ['http://localhost:8080', 'https://myapp.co'];
+const options = {
   origin: (origin, callback) => {
-    const existe = whitelist.includes(origin);
-    if (existe) {
+    if (whitelist.includes(origin) || !origin) {
       callback(null, true);
     } else {
-      callback(new Error('No permitido por CORS'));
+      callback(new Error('no permitido'));
     }
   }
 }
+app.use(cors(options));
 
-app.use(cors(corsOptions));
-
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('Hola mi server en express');
 });
 
-app.get('/nueva-ruta', (req, res) => {
+app.get('/api/nueva-ruta', (req, res) => {
   res.send('Hola, soy una nueva ruta');
 });
 
