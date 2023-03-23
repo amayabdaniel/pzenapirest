@@ -6,7 +6,7 @@ services:
     container_name: db
     environment:
       - POSTGRES_DB=my_store
-      - POSTGRES_USER=root
+      - POSTGRES_USER=amayabdaniel
       - POSTGRES_PASSWORD=admin123
     ports:
       - 5432:5432
